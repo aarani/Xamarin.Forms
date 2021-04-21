@@ -35,6 +35,7 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 				PackChild();
 			}
 			if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName ||
+				e.PropertyName == VisualElement.BackgroundProperty.PropertyName ||
 				e.PropertyName == Frame.BorderColorProperty.PropertyName ||
 				e.PropertyName == Frame.HasShadowProperty.PropertyName)
 				SetupLayer();
@@ -46,6 +47,11 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 				Control.ResetBackgroundColor();
 			else
 				Control.SetBackgroundColor(Element.BackgroundColor);
+
+			if (Element.Background is SolidColorBrush solidBrush)
+				Control.SetBackgroundColor(solidBrush.Color);
+			else
+				Control.ResetBackgroundColor();
 
 			if (Element.BorderColor == Color.Default)
 				Control.ResetBorderColor();
