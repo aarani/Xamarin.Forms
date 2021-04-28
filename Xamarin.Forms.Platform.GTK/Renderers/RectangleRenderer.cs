@@ -18,10 +18,7 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 					SetNativeControl(new RectangleShape());
 				}
 
-				if (Element.Fill is SolidColorBrush colorBrush)
-					SetColor(colorBrush.Color);
-				else
-					throw new PlatformNotSupportedException("Non-SolidColorBrushes are not implemented in GTK");
+				SetFill(Element.Fill);
 
 				SetSize();
 			}
@@ -35,10 +32,7 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 
 			if (e.PropertyName == FormsRectangle.FillProperty.PropertyName)
 			{
-				if (Element.Fill is SolidColorBrush colorBrush)
-					SetColor(colorBrush.Color);
-				else
-					throw new PlatformNotSupportedException("Non-SolidColorBrushes are not implemented in GTK");
+				SetFill(Element.Fill);
 			}
 		}
 
@@ -50,18 +44,18 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 		}
 
 
-		private void SetColor(Color color)
+		private void SetFill(Brush brush)
 		{
 			if (Element == null || Control == null)
 				return;
 
-			if (color.IsDefaultOrTransparent())
+			if (brush is SolidColorBrush colorBrush && !colorBrush.Color.IsDefaultOrTransparent()) 
 			{
-				Control.ResetColor();
+				Control.UpdateColor(colorBrush.Color);
 			}
 			else
 			{
-				Control.UpdateColor(color);
+				Control.ResetColor();
 			}
 		}
 
