@@ -51,3 +51,4 @@ using Xamarin.Forms.Platform.GTK.Renderers;
 
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Shapes.Rectangle), typeof(RectangleRenderer))]
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Shapes.Ellipse), typeof(EllipseRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Shapes.Path), typeof(PathRenderer))]

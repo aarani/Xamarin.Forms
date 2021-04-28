@@ -120,6 +120,7 @@
     <Compile Include="Cells\ViewCellRenderer.cs" />
     <Compile Include="Controls\ActivityIndicator.cs" />
     <Compile Include="Controls\EllipseShape.cs" />
+    <Compile Include="Controls\PathShape.cs" />
     <Compile Include="Controls\RectangeShape.cs" />
     <Compile Include="Controls\BoxView.cs" />
     <Compile Include="Controls\Carousel.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Renderers\AbstractPageRenderer.cs" />
     <Compile Include="Renderers\ActivityIndicatorRenderer.cs" />
     <Compile Include="Renderers\EllipseRenderer.cs" />
+    <Compile Include="Renderers\PathRenderer.cs" />
     <Compile Include="Renderers\RectangleRenderer.cs" />
     <Compile Include="Renderers\BoxViewRenderer.cs" />
     <Compile Include="Renderers\ButtonRenderer.cs" />
