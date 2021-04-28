@@ -192,10 +192,10 @@
     <Compile Include="RendererFactory.cs" />
     <Compile Include="Renderers\AbstractPageRenderer.cs" />
     <Compile Include="Renderers\ActivityIndicatorRenderer.cs" />
-    <Compile Include="Renderers\EllipseRenderer.cs" />
-    <Compile Include="Renderers\PathRenderer.cs" />
-    <Compile Include="Renderers\ShapeRenderer.cs" />
-    <Compile Include="Renderers\RectangleRenderer.cs" />
+    <Compile Include="Renderers\Shapes\EllipseRenderer.cs" />
+    <Compile Include="Renderers\Shapes\PathRenderer.cs" />
+    <Compile Include="Renderers\Shapes\ShapeRenderer.cs" />
+    <Compile Include="Renderers\Shapes\RectangleRenderer.cs" />
     <Compile Include="Renderers\BoxViewRenderer.cs" />
     <Compile Include="Renderers\ButtonRenderer.cs" />
     <Compile Include="Renderers\CarouselPageRenderer.cs" />
