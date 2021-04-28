@@ -119,7 +119,7 @@
     <Compile Include="Cells\ViewCell.cs" />
     <Compile Include="Cells\ViewCellRenderer.cs" />
     <Compile Include="Controls\ActivityIndicator.cs" />
-    <Compile Include="Controls\Rectange.cs" />
+    <Compile Include="Controls\RectangeShape.cs" />
     <Compile Include="Controls\BoxView.cs" />
     <Compile Include="Controls\Carousel.cs" />
     <Compile Include="Controls\CustomComboBox.cs" />
