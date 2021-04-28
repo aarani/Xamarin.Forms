@@ -44,11 +44,12 @@ namespace Xamarin.Forms.Platform.GTK.Controls
 				return;
 			}
 
-			int width = _width;
-			int height = _height;
-			int radius = Math.Min(width / 2, height / 2);
+			double width = _width;
+			double height = _height;
 
-			cr.Arc(width/2 , height/2, radius, 0, 2 * Math.PI);
+			cr.Translate(width / 2, height / 2);
+			cr.Scale(width / 2, height / 2);
+			cr.Arc(0, 0, 1, 0, 2 * Math.PI);
 
 			cr.SetSourceRGBA(_color.R, _color.G, _color.B, _color.A);
 
