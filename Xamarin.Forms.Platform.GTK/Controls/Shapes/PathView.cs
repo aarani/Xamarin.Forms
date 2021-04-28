@@ -7,23 +7,11 @@ using Xamarin.Forms.Shapes;
 
 namespace Xamarin.Forms.Platform.GTK.Controls
 {
-	public class PathShape : GtkFormsContainer
+	public class PathView : ShapeView
 	{
-		private Color _color;
-		private Shapes.PathGeometry _geometry;
+		private PathGeometry _geometry;
 
-		public void UpdateColor(Color color)
-		{
-			_color = color;
-			QueueDraw();
-		}
-
-		public void ResetColor()
-		{
-			UpdateColor(Color.Default);
-		}
-
-		public void UpdateGeometry(Shapes.PathGeometry geometry)
+		public void UpdateGeometry(PathGeometry geometry)
 		{
 			_geometry = geometry;
 			QueueDraw();
@@ -31,16 +19,10 @@ namespace Xamarin.Forms.Platform.GTK.Controls
 
 		protected override void Draw(Gdk.Rectangle area, Context cr)
 		{
-			if (_color.IsDefaultOrTransparent())
-			{
-				return;
-			}
-
 			cr.FillRule = _geometry.FillRule == Shapes.FillRule.EvenOdd ? Cairo.FillRule.EvenOdd : Cairo.FillRule.Winding;
 
 			foreach (var figure in _geometry.Figures)
 			{
-				
 				cr.MoveTo(figure.StartPoint.X, figure.StartPoint.Y);
 
 				Point lastPoint = figure.StartPoint;
@@ -80,11 +62,9 @@ namespace Xamarin.Forms.Platform.GTK.Controls
 
 				if (figure.IsClosed)
 					cr.ClosePath();
-				
 			}
-			
-			cr.SetSourceRGBA(_color.R, _color.G, _color.B, _color.A);
-			cr.Fill();
+
+			base.Draw(area, cr);
 		}
 
 	}
