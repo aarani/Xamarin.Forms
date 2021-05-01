@@ -1,0 +1,46 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  build_and_deploy:
+    env:
+        # latest non-preview version at the time of writing this CI script
+        BASE_VERSION: 5.0.0.2012
+        DEFAULT_REF: refs/heads/5.0.0
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Download Nuget.exe
+      uses: NuGet/setup-nuget@v1.0.5
+      with:
+        nuget-version: 5.4.0
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
+    - name: Restore & Build
+      run: |
+        cd Xamarin.Forms.Platform.GTK
+        nuget restore Xamarin.Forms.Platform.GTK.csproj
+        msbuild Xamarin.Forms.Platform.GTK.csproj /property:Configuration=Release
+    - name: Package and upload
+      if: ${{ github.event_name == 'push' && github.ref == env.DEFAULT_REF }}
+      run: |
+        $buildConfiguration = "Release"
+        $date = get-date -format "yyyyMMdd-HHmm"
+        $hash = & git rev-parse --short HEAD
+        # Generates a version number with format "{XF.Core base version}--date{date}.git-{commit-id}"
+        $version = "$env:BASE_VERSION--date$date.git-$hash" 
+        
+        $fileName= "DotNetForms.Platform.GTK.$version.nupkg"
+        
+        # Replaces '$core_version$' and '$version$' in GTK nuspec file with XF.Core dependency version and version generated above for this commit
+        # Powershell scripts copied from https://github.com/xamarin/Xamarin.Forms/blob/5.0.0/build/steps/build-nuget.yml
+        Get-ChildItem './.nuspec/*.GTK.nuspec' -Recurse | Foreach-Object {
+             (Get-Content $_) | Foreach-Object  {
+                 $_ -replace '\$version\$', $version `
+                    -replace '\$core_version\$', $env:BASE_VERSION `
+                    -replace '\$Configuration\$', $buildConfiguration `
+             } | Set-Content $_
+        }
+
+        nuget pack './.nuspec/Xamarin.Forms.Platform.GTK.nuspec'
+        nuget push $fileName -ApiKey ${{secrets.NUGET_API_KEY}} -Source https://api.nuget.org/v3/index.json
