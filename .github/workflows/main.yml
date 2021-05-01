@@ -1,0 +1,40 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  build_and_deploy:
+    env:
+        BASE_VERSION: 4.8.0.1821
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Download Nuget.exe
+      uses: NuGet/setup-nuget@v1.0.5
+      with:
+        nuget-version: 5.4.0
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
+    - name: Restore & Build
+      run: |
+        cd Xamarin.Forms.Platform.GTK
+        Nuget.exe restore Xamarin.Forms.Platform.GTK.csproj
+        msbuild Xamarin.Forms.Platform.GTK.csproj /property:Configuration=Release
+    - name: Package and upload
+      if: ${{ github.event_name == 'push' }}
+      run: |
+        $buildConfiguration = "Release"
+        $date = get-date -format "yyyyMMdd-HHmm"
+        $hash = & git rev-parse --short HEAD
+        $version = "$env:BASE_VERSION--date$date.git-$hash" 
+        
+        $fileName= "DotNetForms.Platform.GTK.$version.nupkg"
+        
+        Get-ChildItem './.nuspec/*.GTK.nuspec' -Recurse | Foreach-Object {
+             (Get-Content $_) | Foreach-Object  {
+                 $_ -replace '\$version\$', $version `
+                    -replace '\$Configuration\$', $buildConfiguration `
+             } | Set-Content $_
+        }
+
+        Nuget.exe pack './.nuspec/Xamarin.Forms.Platform.GTK.nuspec'
+        Nuget.exe push $fileName -ApiKey ${{secrets.NUGET_API_KEY}} -Source https://api.nuget.org/v3/index.json
