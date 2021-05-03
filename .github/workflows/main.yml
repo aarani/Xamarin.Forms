@@ -6,7 +6,7 @@ jobs:
     env:
         # latest non-preview version at the time of writing this CI script
         BASE_VERSION: 5.0.0.2012
-        DEFAULT_REF: refs/heads/5.0.0
+        DEFAULT_REF: refs/heads/ci-5.0.0-bak
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
